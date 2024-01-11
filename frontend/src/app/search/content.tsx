@@ -43,7 +43,7 @@ const SearchPageContent = (): JSX.Element => {
 
 	useEffect(() => {
 		setSearchInput(
-			`I'm searching for: ${typeInput} ${typeInput && 'with the specifications:'} ${specInput} ${
+			`I'm looking for: ${typeInput} ${typeInput && 'with the specifications:'} ${specInput} ${
 				specInput && 'with the value:'
 			} ${valueInput}`,
 		);
