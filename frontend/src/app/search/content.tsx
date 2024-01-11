@@ -77,9 +77,9 @@ const SearchPageContent = (): JSX.Element => {
 											if (typeInput && specInput && valueInput)
 												router.push(
 													`result?${new URLSearchParams({
-														type: typeInput,
-														spec: specInput,
-														value: valueInput,
+														type: typeInput.toLowerCase(),
+														spec: specInput.toLowerCase(),
+														value: valueInput.toLowerCase(),
 														lang: isLanguageFilter ? languageInput || 'en' : 'en',
 														limit: isLimitFilter ? limitInput || '10' : '10',
 														advanced: isAdvancedResult ? 'true' : 'false',

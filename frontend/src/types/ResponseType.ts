@@ -3,5 +3,5 @@ export type ResponseType = {
 	type: string;
 	abstract: string;
 	date: string;
-	link: string;
+	uri: string;
 };

@@ -27,7 +27,7 @@ const ResultCard = ({ result, isAdvanced }: { result: ResponseType; isAdvanced: 
 					</VStack>
 					<Text>{result.date}</Text>
 					<Text color="#00978A" size="sm">
-						{result.link}
+						{result.uri}
 					</Text>
 				</>
 			)}

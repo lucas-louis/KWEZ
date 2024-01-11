@@ -50,7 +50,7 @@ const ResultPageContent = (): JSX.Element => {
 		)
 			.then((res) => {
 				setIsLoading(false);
-				if (res.status === 200) res.json().then((data) => setResults(data));
+				if (res.status === 200) res.json().then((data) => setResults(data.results));
 				else throw new Error();
 			})
 			.catch(() => {
@@ -116,8 +116,8 @@ const ResultPageContent = (): JSX.Element => {
 							</VStack>
 							<VStack w="100%">
 								{results.map((result) => (
-									<Box as="span" w="100%" id={result.link}>
-										<Link href={result.link} target="_blank">
+									<Box as="span" w="100%" id={result.uri}>
+										<Link href={result.uri} target="_blank">
 											<ResultCard result={result} isAdvanced={isAdvancedResult} />
 										</Link>
 									</Box>
