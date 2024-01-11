@@ -1,4 +1,5 @@
 from flask import Flask, request as req
+from flask_cors import CORS
 from SPARQLWrapper import SPARQLWrapper, JSON
 from classes.Request import Request
 
@@ -6,6 +7,7 @@ sparql = SPARQLWrapper("http://dbpedia.org/sparql")
 sparql.setReturnFormat(JSON)
 
 app = Flask(__name__)
+cors = CORS(app)
 
 types = {
     "artist": "dbo:MusicalArtist",
