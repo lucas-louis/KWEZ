@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "3000:3000"
+    networks:
+      - kwez_network
+    env_file: frontend/.env
+    restart: always
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - kwez_network
+#    env_file: backend/.env
+    restart: always
+
+networks:
+  kwez_network:
