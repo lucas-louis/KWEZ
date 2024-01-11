@@ -14,10 +14,7 @@ types = {
     "album": "dbo:Album"
     }
 
-specs = {
-    "name": "dbp:name",
-    "label": "rdfs:label"
-    }
+specs = ["name", "label"]
 
 @app.route("/<string:type>/<string:spec>/<string:value>")
 def get(type, spec, value):
@@ -26,20 +23,20 @@ def get(type, spec, value):
     lang = req.args.get("lang") or "en"
     limit = req.args.get("limit") or "5"
 
-    if type not in types.keys() or spec not in specs.keys():
+    if type not in types.keys() or spec not in specs:
         return {}, 401
     if type == "album" and spec == "name":
         spec = "label"
 
     try:
-        request = Request(sparql, types.get(type), specs.get(spec), value, lang, int(limit))
-        print(request.request)
+        request = Request(sparql, types.get(type), spec, value, lang, int(limit))
+        # print(request.request)
         results = request.send_request()
     except Exception as e:
         print(e)
         return str(e), 500
 
-    print(f"\n\nResults for query:\n{results}")
+    # print(f"\n\nResults for query:\n{results}")
     return results, 200 if len(results.get("results")) != 0 else 404
 
 if __name__ == "__main__":

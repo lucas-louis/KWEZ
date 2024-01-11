@@ -16,7 +16,9 @@ class Request():
 
 
     def set_request(self):
-        self.request = f"SELECT ?result WHERE {{?result rdf:type {self.type}; {self.spec} \"{self.value}\"@{self.lang} .}} LIMIT {self.limit}"
+        lang_filters = f"FILTER(LANG(?name) = \"\" || LANG(?name) = \"{self.lang}\")\nFILTER(LANG(?abstract) = \"\" || LANG(?abstract) = \"{self.lang}\")"
+        filters = f"FILTER (STR(?{self.spec}) = \"{self.value}\")\n" + lang_filters
+        self.request = f"SELECT * WHERE {{?uri rdf:type {self.type}; dbp:name ?name; dbo:abstract ?abstract.\n{filters}}} LIMIT {self.limit}"
 
     def send_request(self) -> dict:
         self.wrapper.setQuery(self.request)
@@ -24,7 +26,14 @@ class Request():
         if len(results.get("results").get("bindings")) == 0:
             return {"results": []}
         results = results.get("results").get("bindings")[0]
-        final_results = {"results": [{"uri": results.get("result").get("value")}]}
-        # uri: results.get("result").get("value")
-        # others: results.get("propName").get("value")
+        final_results = {
+            "results": [
+                {
+                    "uri": results.get("uri").get("value"),
+                    "type": self.type,
+                    "name": results.get("name").get("value"),
+                    "abstract": results.get("abstract").get("value")
+                }
+            ]
+        }
         return final_results
