@@ -1,6 +1,14 @@
 import { Button, Text } from '@chakra-ui/react';
 
-const PredefinedLabel = ({ label, onClick }: { label: string; onClick: (word: string) => void }): JSX.Element => (
+const PredefinedLabel = ({
+	label,
+	selected,
+	onClick,
+}: {
+	label: string;
+	selected: boolean;
+	onClick: (word: string) => void;
+}): JSX.Element => (
 	<Button
 		p="8px 16px"
 		border="2px solid"
@@ -11,6 +19,7 @@ const PredefinedLabel = ({ label, onClick }: { label: string; onClick: (word: st
 		_hover={{
 			bg: '#00776F',
 		}}
+		bg={selected ? '#00776F' : 'transparent'}
 		onClick={() => onClick(label)}
 	>
 		<Text color="#FFFDEB">{label}</Text>

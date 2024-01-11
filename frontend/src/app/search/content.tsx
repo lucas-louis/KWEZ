@@ -1,8 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
-	Button,
 	HStack,
 	Icon,
 	Image,
@@ -11,6 +10,7 @@ import {
 	InputRightElement,
 	Text,
 	useDisclosure,
+	useToast,
 	VStack,
 	Wrap,
 	WrapItem,
@@ -22,18 +22,32 @@ import SimpleFilter from 'components/app/searchPage/SimpleFilter';
 import InputFilter from 'components/app/searchPage/InputFilter';
 
 import SearchIcon from 'assets/icons/SearchIcon';
+import { useRouter } from 'next/navigation';
 
 const SearchPageContent = (): JSX.Element => {
-	const [searchInput, setSearchInput] = useState('');
+	const [searchInput, setSearchInput] = useState("I'm searching for:");
+	const [typeInput, setTypeInput] = useState('');
+	const [specInput, setSpecInput] = useState('');
+	const [valueInput, setValueInput] = useState('');
 	const [languageInput, setLanguageInput] = useState('');
 	const [limitInput, setLimitInput] = useState('');
 	const { isOpen: isAdvancedResult, onToggle: toggleIsAdvancedResult } = useDisclosure();
 	const { isOpen: isLanguageFilter, onToggle: toggleLanguageFilter } = useDisclosure();
 	const { isOpen: isLimitFilter, onToggle: toggleLimitFilter } = useDisclosure();
-	const predefinedLabels = ['Where', 'Who'];
+	const predefinedTypes = ['Artist', 'Album'];
+	const predefinedSpecs = ['Name', 'Year'];
 
-	const addWordToInput = (word: string) => setSearchInput((prev) => (prev ? `${prev} ${word}` : word));
-	const removeLastWordToInput = () => setSearchInput((prev) => prev.split(' ').slice(0, -1).join(' '));
+	const toast = useToast({ duration: 3000, isClosable: true });
+
+	const router = useRouter();
+
+	useEffect(() => {
+		setSearchInput(
+			`I'm searching for: ${typeInput} ${typeInput && 'with the specifications:'} ${specInput} ${
+				specInput && 'with the value:'
+			} ${valueInput}`,
+		);
+	}, [typeInput, specInput, valueInput]);
 
 	return (
 		<HStack spacing="0px" w="100%" h="100%" p="32px" bg="#011A1A" align="start" justify="stretch">
@@ -53,16 +67,27 @@ const SearchPageContent = (): JSX.Element => {
 							/>
 							{searchInput && (
 								<InputRightElement>
-									<Link
-										href={`result?${new URLSearchParams({
-											q: searchInput,
-											lang: isLanguageFilter ? languageInput || 'en' : 'en',
-											limit: isLimitFilter ? limitInput || '10' : '10',
-											advanced: isAdvancedResult ? 'true' : 'false',
-										}).toString()}`}
-									>
-										<Icon as={SearchIcon} color="#00978A" w="16px" h="16px" cursor="pointer" />
-									</Link>
+									<Icon
+										as={SearchIcon}
+										color="#00978A"
+										w="16px"
+										h="16px"
+										cursor="pointer"
+										onClick={() => {
+											if (typeInput && specInput && valueInput)
+												router.push(
+													`result?${new URLSearchParams({
+														type: typeInput,
+														spec: specInput,
+														value: valueInput,
+														lang: isLanguageFilter ? languageInput || 'en' : 'en',
+														limit: isLimitFilter ? limitInput || '10' : '10',
+														advanced: isAdvancedResult ? 'true' : 'false',
+													}).toString()}`,
+												);
+											else toast({ title: 'Please fill all the fields', status: 'error' });
+										}}
+									/>
 								</InputRightElement>
 							)}
 						</InputGroup>
@@ -92,17 +117,47 @@ const SearchPageContent = (): JSX.Element => {
 							/>
 						</HStack>
 					</VStack>
-					<VStack w="100%" align="start">
-						<Button variant="secondary" size="sm" onClick={removeLastWordToInput}>
-							Erase last word
-						</Button>
-						<Wrap spacing="8px" w="100%">
-							{predefinedLabels.map((label) => (
-								<WrapItem key={label}>
-									<PredefinedLabel label={label} onClick={addWordToInput} />
-								</WrapItem>
-							))}
-						</Wrap>
+					<VStack w="100%" align="start" spacing="24px">
+						<VStack align="start">
+							<Text size="boldLg">I'm looking for:</Text>
+							<Wrap>
+								{predefinedTypes.map((label) => (
+									<WrapItem key={label}>
+										<PredefinedLabel
+											label={label}
+											selected={label === typeInput}
+											onClick={() => setTypeInput(label)}
+										/>
+									</WrapItem>
+								))}
+							</Wrap>
+						</VStack>
+						{typeInput && (
+							<VStack align="start">
+								<Text size="boldLg">With the specifications:</Text>
+								<Wrap>
+									{predefinedSpecs.map((label) => (
+										<WrapItem key={label}>
+											<PredefinedLabel
+												label={label}
+												selected={label === specInput}
+												onClick={() => setSpecInput(label)}
+											/>
+										</WrapItem>
+									))}
+								</Wrap>
+							</VStack>
+						)}
+						{specInput && (
+							<VStack align="start" maxW="400px" w="100%">
+								<Text size="boldLg">With the value:</Text>
+								<Input
+									placeholder="The value of the specifications"
+									w="100%"
+									onChange={(e) => setValueInput(e.target.value)}
+								/>
+							</VStack>
+						)}
 					</VStack>
 				</VStack>
 			</VStack>

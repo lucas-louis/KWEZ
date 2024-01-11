@@ -18,7 +18,7 @@ const ResultCard = ({ result, isAdvanced }: { result: ResponseType; isAdvanced: 
 		transition="all .3s ease-in-out"
 	>
 		<VStack spacing="4px" align="start">
-			<Text size="boldLg">{result.response}</Text>
+			<Text size="boldLg">{result.name}</Text>
 			{isAdvanced && (
 				<>
 					<VStack spacing="0px" align="start">

@@ -1,5 +1,5 @@
 export type ResponseType = {
-	response: string;
+	name: string;
 	type: string;
 	abstract: string;
 	date: string;
