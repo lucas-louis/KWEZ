@@ -10,7 +10,7 @@
     "lint:fix": "next lint --fix",
     "format": "prettier --write src/**/*.{js,jsx,ts,tsx}",
     "docker:start": "docker-compose up",
-    "docker:dev": "docker-compose -f docker-compose.dev.yml up",
+    "docker:dev": "docker-compose -f docker-compose.dev.yml up"
   },
   "dependencies": {
     "@babel/core": "^7.22.5",
