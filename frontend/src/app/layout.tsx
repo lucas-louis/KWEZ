@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import Providers from 'app/Providers';
 
 export const metadata: Metadata = {
-	title: 'Kwez',
+	title: 'KWEZ.',
 	description: "Unlock knowledge with semantic power",
 	viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
 	icons: '',
