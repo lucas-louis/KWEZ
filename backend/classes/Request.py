@@ -17,11 +17,12 @@ class Request():
 
     def set_request(self):
         self.request = f"SELECT ?result WHERE {{?result rdf:type {self.type}; {self.spec} \"{self.value}\"@{self.lang} .}} LIMIT {self.limit}"
-        print(self.request)
 
     def send_request(self) -> dict:
         self.wrapper.setQuery(self.request)
         results = self.wrapper.queryAndConvert()
+        if len(results.get("results").get("bindings")) == 0:
+            return {"results": []}
         results = results.get("results").get("bindings")[0]
         final_results = {"results": [{"uri": results.get("result").get("value")}]}
         # uri: results.get("result").get("value")

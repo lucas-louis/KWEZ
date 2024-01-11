@@ -19,6 +19,8 @@ specs = {
 
 @app.route("/<string:type>/<string:spec>/<string:value>")
 def get(type, spec, value):
+    type = type.lower()
+    spec = spec.lower()
     lang = req.args.get("lang") or "en"
     limit = req.args.get("limit") or "5"
 
@@ -27,11 +29,16 @@ def get(type, spec, value):
     if type == "album" and spec == "name":
         spec = "label"
 
-    request = Request(sparql, types.get(type), specs.get(spec), value, lang, int(limit))
-    results = request.send_request()
+    try:
+        request = Request(sparql, types.get(type), specs.get(spec), value, lang, int(limit))
+        print(request.request)
+        results = request.send_request()
+    except Exception as e:
+        print(e)
+        return str(e), 500
 
     print(f"\n\nResults for query:\n{results}")
-    return results, 200
+    return results, 200 if len(results.get("results")) != 0 else 404
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=8080)
