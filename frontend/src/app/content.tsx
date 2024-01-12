@@ -13,7 +13,7 @@ const RootContent = (): JSX.Element => {
 		<MotionHStack
 			spacing="0px"
 			w="100%"
-			h="100%"
+			h="100vh"
 			bg="#011111"
 			align="start"
 			justify="stretch"

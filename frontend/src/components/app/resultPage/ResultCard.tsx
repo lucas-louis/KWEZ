@@ -23,7 +23,7 @@ const ResultCard = ({ result, isAdvanced }: { result: ResponseType; isAdvanced: 
 				<>
 					<VStack spacing="0px" align="start">
 						<Text>An entity of type: {result.type}</Text>
-						<Text maxW="1000px">{result.abstract}</Text>
+						<Text maxW="1000px">{result.abstract.slice(0, 500)}</Text>
 					</VStack>
 					<Text>{result.date}</Text>
 					<Text color="#00978A" size="sm">

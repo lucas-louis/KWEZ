@@ -9,7 +9,9 @@ import 'theme/index.css';
 const Providers = ({ children }: { children: JSX.Element }): JSX.Element => (
 	<CacheProvider>
 		<ChakraProvider theme={theme} resetCSS>
-			<VStack height="100vh">{children}</VStack>
+			<VStack minH="100vh" h="100%">
+				{children}
+			</VStack>
 		</ChakraProvider>
 	</CacheProvider>
 );

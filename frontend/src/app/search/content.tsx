@@ -34,8 +34,8 @@ const SearchPageContent = (): JSX.Element => {
 	const { isOpen: isAdvancedResult, onToggle: toggleIsAdvancedResult } = useDisclosure();
 	const { isOpen: isLanguageFilter, onToggle: toggleLanguageFilter } = useDisclosure();
 	const { isOpen: isLimitFilter, onToggle: toggleLimitFilter } = useDisclosure();
-	const predefinedTypes = ['Artist', 'Album'];
-	const predefinedSpecs = ['Name', 'Year'];
+	const predefinedTypes = ['Artist', 'Album', 'Music'];
+	const predefinedSpecs = ['Name', 'Album', 'Music'];
 
 	const toast = useToast({ duration: 3000, isClosable: true });
 
@@ -50,7 +50,7 @@ const SearchPageContent = (): JSX.Element => {
 	}, [typeInput, specInput, valueInput]);
 
 	return (
-		<HStack spacing="0px" w="100%" h="100%" p="32px" bg="#011A1A" align="start" justify="stretch">
+		<HStack spacing="0px" w="100%" minH="100vh" h="100%" p="32px" bg="#011A1A" align="start" justify="stretch">
 			<VStack w="100%" spacing="64px" px="16px" align="start">
 				<Link href="/">
 					<Text size="6xl" color="white" fontFamily="Outfit">
@@ -136,15 +136,22 @@ const SearchPageContent = (): JSX.Element => {
 							<VStack align="start">
 								<Text size="boldLg">With the specifications:</Text>
 								<Wrap>
-									{predefinedSpecs.map((label) => (
-										<WrapItem key={label}>
-											<PredefinedLabel
-												label={label}
-												selected={label === specInput}
-												onClick={() => setSpecInput(label)}
-											/>
-										</WrapItem>
-									))}
+									{predefinedSpecs
+										.filter(
+											(spec) =>
+												(typeInput === 'Album' && spec === 'Name') ||
+												(typeInput === 'Music' && spec !== 'Music') ||
+												typeInput === 'Artist',
+										)
+										.map((label) => (
+											<WrapItem key={label}>
+												<PredefinedLabel
+													label={label}
+													selected={label === specInput}
+													onClick={() => setSpecInput(label)}
+												/>
+											</WrapItem>
+										))}
 								</Wrap>
 							</VStack>
 						)}

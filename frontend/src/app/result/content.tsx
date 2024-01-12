@@ -63,7 +63,7 @@ const ResultPageContent = (): JSX.Element => {
 	}, [searchParams]);
 
 	return (
-		<HStack spacing="0px" w="100%" h="100%" p="32px" bg="#011A1A" align="start" justify="stretch">
+		<HStack spacing="0px" w="100%" minH="100vh" h="100%" p="32px" bg="#011A1A" align="stretch" justify="start">
 			<VStack w="100%" spacing="64px" px="16px" align="start">
 				<Link href="/">
 					<Text size="6xl" color="white" fontFamily="Outfit">
@@ -127,7 +127,7 @@ const ResultPageContent = (): JSX.Element => {
 					)}
 				</VStack>
 			</VStack>
-			<Image src="/assets/home-picture.png" alt="home picture" w="300px" h="100%" borderRadius="32px" />
+			<Image src="/assets/home-picture.png" alt="home picture" w="300px" borderRadius="32px" />
 		</HStack>
 	);
 };
