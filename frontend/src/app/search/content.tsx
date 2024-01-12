@@ -35,7 +35,7 @@ const SearchPageContent = (): JSX.Element => {
 	const { isOpen: isLanguageFilter, onToggle: toggleLanguageFilter } = useDisclosure();
 	const { isOpen: isLimitFilter, onToggle: toggleLimitFilter } = useDisclosure();
 	const predefinedTypes = ['Artist', 'Album', 'Music'];
-	const predefinedSpecs = ['Name', 'Album', 'Music'];
+	const predefinedSpecs = ['Name', 'Album', 'Music', 'Artist'];
 
 	const toast = useToast({ duration: 3000, isClosable: true });
 
@@ -141,7 +141,7 @@ const SearchPageContent = (): JSX.Element => {
 											(spec) =>
 												(typeInput === 'Album' && spec === 'Name') ||
 												(typeInput === 'Music' && spec !== 'Music') ||
-												typeInput === 'Artist',
+												(typeInput === 'Artist' && spec !== 'Artist'),
 										)
 										.map((label) => (
 											<WrapItem key={label}>

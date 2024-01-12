@@ -12,7 +12,6 @@ import {
 	Spinner,
 	Text,
 	useDisclosure,
-	useToast,
 	VStack,
 } from '@chakra-ui/react';
 import { useSearchParams } from 'next/navigation';
@@ -37,8 +36,6 @@ const ResultPageContent = (): JSX.Element => {
 
 	const searchParams = useSearchParams();
 
-	const toast = useToast({ duration: 3000, isClosable: true });
-
 	useEffect(() => {
 		if (searchParams.get('advanced') === 'true') setIsAdvancedResultOn();
 		else setIsAdvancedResultOff();
@@ -55,10 +52,6 @@ const ResultPageContent = (): JSX.Element => {
 			})
 			.catch(() => {
 				setIsLoading(false);
-				toast({
-					title: 'An error occurred',
-					status: 'error',
-				});
 			});
 	}, [searchParams]);
 
