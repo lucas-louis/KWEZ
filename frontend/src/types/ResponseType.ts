@@ -4,4 +4,5 @@ export type ResponseType = {
 	abstract: string;
 	date: string;
 	uri: string;
+	musicLength: number;
 };

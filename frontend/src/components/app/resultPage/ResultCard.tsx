@@ -26,6 +26,7 @@ const ResultCard = ({ result, isAdvanced }: { result: ResponseType; isAdvanced: 
 						<Text maxW="1000px">{result.abstract.slice(0, 500)}</Text>
 					</VStack>
 					<Text>{result.date}</Text>
+					<Text>Length: {result.musicLength}</Text>
 					<Text color="#00978A" size="sm">
 						{result.uri}
 					</Text>
