@@ -9,12 +9,12 @@
             "album": {
                 "type": "secondary",
                 "spec_type": "dbo:Album",
-                "prop_type": "dbo:artist"
+                "prop_type": "^dbp:artist"
             },
             "music": {
                 "type": "secondary",
                 "spec_type": "dbo:MusicalWork",
-                "prop_type": "dbo:artist"
+                "prop_type": "^dbo:artist"
             }
         }
     },
@@ -37,7 +37,12 @@
             "album": {
                 "type": "secondary",
                 "spec_type": "dbo:Album",
-                "prop_type": "dbp:title"
+                "prop_type": "^dbp:title"
+            },
+            "artist": {
+                "type": "secondary",
+                "spec_type": "dbo:MusicalArtist",
+                "prop_type": "dbo:artist"
             }
         }
     }

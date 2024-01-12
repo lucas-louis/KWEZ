@@ -37,7 +37,7 @@ def get(type, spec, value):
         print(e)
         return str(e), 500
 
-    return results, 200 if len(results.get("results")) != 0 else 404
+    return results, 200
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080)
