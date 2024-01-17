@@ -26,10 +26,12 @@ const ResultCard = ({ result, isAdvanced }: { result: ResponseType; isAdvanced: 
 						<Text maxW="1000px">{result.abstract.slice(0, 500)}</Text>
 					</VStack>
 					<Text>{result.date}</Text>
-					<Text>
-						Length: {Math.floor(result.musicLength / 60000)}:
-						{((result.musicLength % 60000) / 1000).toFixed(0).padStart(2, '0')}
-					</Text>
+					{result.type !== 'dbo:MusicalArtist' && (
+						<Text>
+							Length: {Math.floor(result.musicLength / 60000)}:
+							{((result.musicLength % 60000) / 1000).toFixed(0).padStart(2, '0')}
+						</Text>
+					)}
 					<Text color="#00978A" size="sm">
 						{result.uri}
 					</Text>
