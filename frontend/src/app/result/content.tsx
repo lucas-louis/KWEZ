@@ -35,6 +35,14 @@ const ResultPageContent = (): JSX.Element => {
 	} = useDisclosure();
 
 	const searchParams = useSearchParams();
+	let searchInputValue = "I'm looking for information on";
+	if (searchParams.get('type') === 'music') searchInputValue += ` a ${searchParams.get('type')}`;
+	else searchInputValue += ` an ${searchParams.get('type')}`;
+	if (searchParams.get('spec') !== 'name')
+		searchInputValue += ` ${searchParams.get('type') === 'music' ? 'from' : 'with'} the ${searchParams.get(
+			'spec',
+		)} named ${searchParams.get('value')}`;
+	else searchInputValue += ` named ${searchParams.get('value')}`;
 
 	useEffect(() => {
 		if (searchParams.get('advanced') === 'true') setIsAdvancedResultOn();
@@ -66,17 +74,7 @@ const ResultPageContent = (): JSX.Element => {
 				<VStack w="100%" spacing="32px" px="32px">
 					<VStack w="100%">
 						<InputGroup>
-							<Input
-								value={
-									`I'm searching for: ${searchParams.get(
-										'type',
-									)} with the specifications: ${searchParams.get(
-										'spec',
-									)} with the value: ${searchParams.get('value')}` || 'No query founded'
-								}
-								readOnly
-								placeholder="Write your question by clicking on the words under"
-							/>
+							<Input value={searchInputValue} readOnly />
 							<InputRightElement w="auto" pr="8px">
 								<Box as="span" w="100%">
 									<Link href="search">

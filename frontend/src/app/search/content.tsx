@@ -25,7 +25,7 @@ import SearchIcon from 'assets/icons/SearchIcon';
 import { useRouter } from 'next/navigation';
 
 const SearchPageContent = (): JSX.Element => {
-	const [searchInput, setSearchInput] = useState("I'm searching for:");
+	const [searchInput, setSearchInput] = useState("I'm looking for information on");
 	const [typeInput, setTypeInput] = useState('');
 	const [specInput, setSpecInput] = useState('');
 	const [valueInput, setValueInput] = useState('');
@@ -42,15 +42,30 @@ const SearchPageContent = (): JSX.Element => {
 	const router = useRouter();
 
 	useEffect(() => {
-		setSearchInput(
-			`I'm looking for: ${typeInput} ${typeInput && 'with the specifications:'} ${specInput} ${
-				specInput && 'with the value:'
-			} ${valueInput}`,
-		);
+		let searchInputValue = "I'm looking for information on";
+		if (typeInput) {
+			if (typeInput === 'Music') searchInputValue += ` a ${typeInput}`;
+			else searchInputValue += ` an ${typeInput}`;
+		}
+		if (specInput) {
+			if (specInput !== 'Name')
+				searchInputValue += ` ${typeInput === 'Music' ? 'from' : 'with'} the ${specInput} named ${valueInput}`;
+			else searchInputValue += ` named ${valueInput}`;
+		}
+		setSearchInput(searchInputValue);
 	}, [typeInput, specInput, valueInput]);
 
+	useEffect(() => {
+		setSpecInput('');
+		setValueInput('');
+	}, [typeInput]);
+
+	useEffect(() => {
+		setValueInput('');
+	}, [specInput]);
+
 	return (
-		<HStack spacing="0px" w="100%" minH="100vh" h="100%" p="32px" bg="#011A1A" align="start" justify="stretch">
+		<HStack spacing="0px" w="100%" minH="100vh" h="100%" p="32px" bg="#011A1A" align="stretch" justify="start">
 			<VStack w="100%" spacing="64px" px="16px" align="start">
 				<Link href="/">
 					<Text size="6xl" color="white" fontFamily="Outfit">
@@ -160,6 +175,7 @@ const SearchPageContent = (): JSX.Element => {
 								<Text size="boldLg">With the value:</Text>
 								<Input
 									placeholder="The value of the specifications"
+									value={valueInput}
 									w="100%"
 									onChange={(e) => setValueInput(e.target.value)}
 								/>
@@ -168,7 +184,7 @@ const SearchPageContent = (): JSX.Element => {
 					</VStack>
 				</VStack>
 			</VStack>
-			<Image src="/assets/home-picture.png" alt="home picture" w="300px" h="100%" borderRadius="32px" />
+			<Image src="/assets/home-picture.png" alt="home picture" w="300px" borderRadius="32px" />
 		</HStack>
 	);
 };
