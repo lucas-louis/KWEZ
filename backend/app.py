@@ -23,9 +23,9 @@ def get(type, spec, value):
     limit = req.args.get("limit") or "5"
 
     if type not in query_args.keys():
-        return {}, 401
+        return {}, 400
     if spec not in query_args.get(type).get("specs").keys():
-        return {}, 401
+        return {}, 400
 
     id = query_args.get(type).get("type")
     extra_data = query_args.get(type).get("specs").get(spec)

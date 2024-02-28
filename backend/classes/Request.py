@@ -56,7 +56,6 @@ class Request():
                 final_results.get("results")[i]["musicArtistName"] = results[i].get("musicArtistName").get("value")
                 res = requests.get(f"https://musicbrainz.org/ws/2/recording?query=%22{result.get('name')}%22 AND artist:%22{result.get('musicArtistName')}%22&fmt=json").json()
                 if len(res.get("recordings")) == 0:
-                    return final_results
+                    continue
                 final_results.get("results")[i]["musicLength"] = res.get("recordings")[0].get("length")
-
         return final_results
