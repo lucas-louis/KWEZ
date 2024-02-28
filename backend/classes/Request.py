@@ -20,8 +20,8 @@ class Request():
 
 
     def set_request(self):
-        extra_result_bindings = "" if self.type != "dbo:MusicalWork" else "dbo:artist ?musicArtist; "
-        extra_bindings = "" if self.type != "dbo:MusicalWork" else " ?musicArtist rdf:type dbo:MusicalArtist; dbp:name ?musicArtistName. "
+        extra_result_bindings = "" if self.type != "dbo:MusicalWork" else "dbo:artist ?artist; dbo:genre ?genre; "
+        extra_bindings = "" if self.type != "dbo:MusicalWork" else "\n\t?artist rdf:type dbo:MusicalArtist; dbp:name ?artistName.\n\t?genre rdf:type dbo:Genre; dbp:name ?genreName."
         filters = f"\tFILTER(LANG(?name) = \"\" || LANG(?name) = \"{self.lang}\")\n\tFILTER(LANG(?abstract) = \"\" || LANG(?abstract) = \"{self.lang}\")\n"
 
         if self.query_type == "primary":
@@ -30,10 +30,11 @@ class Request():
             filters += f"\tFILTER (LCASE(STR(?{self.spec})) = LCASE(\"{self.value}\"))\n"
         else:
             result = f"?result rdf:type {self.type}; {extra_result_bindings}{self.prop_type} ?{self.spec}; dbp:name ?name; dbo:abstract ?abstract.{extra_bindings}\n"
-            inter = f"?{self.spec} rdf:type {self.spec_type}; dbp:name ?{self.spec}Name.\n"
+            inter = f"?{self.spec} rdf:type {self.spec_type}; dbp:name ?{self.spec}Name.\n\t" if self.spec not in ["artist", "genre"] else ""
             filters += f"\tFILTER (LCASE(STR(?{self.spec}Name)) = LCASE(\"{self.value}\"))\n"
 
-        self.request = f"SELECT * WHERE {{\n\t{inter}\t{result}{filters}}} LIMIT {self.limit}"
+        self.request = f"SELECT * WHERE {{\n\t{inter}{result}{filters}}} LIMIT {self.limit}"
+
 
     def send_request(self) -> dict:
         self.wrapper.setQuery(self.request)
@@ -53,7 +54,8 @@ class Request():
         }
         if self.type == "dbo:MusicalWork":
             for i, result in enumerate(final_results.get("results")):
-                final_results.get("results")[i]["musicArtistName"] = results[i].get("musicArtistName").get("value")
+                final_results.get("results")[i]["musicGenreName"] = results[i].get("genreName").get("value")
+                final_results.get("results")[i]["musicArtistName"] = results[i].get("artistName").get("value")
                 res = requests.get(f"https://musicbrainz.org/ws/2/recording?query=%22{result.get('name')}%22 AND artist:%22{result.get('musicArtistName')}%22&fmt=json").json()
                 if len(res.get("recordings")) == 0:
                     continue
