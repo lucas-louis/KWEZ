@@ -5,4 +5,6 @@ export type ResponseType = {
 	date: string;
 	uri: string;
 	musicLength: number;
+	musicArtistName: string;
+	musicGenreName: string;
 };
