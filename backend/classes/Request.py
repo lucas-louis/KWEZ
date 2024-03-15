@@ -33,7 +33,7 @@ class Request():
             inter = f"?{self.spec} rdf:type {self.spec_type}; dbp:name ?{self.spec}Name.\n\t" if self.spec not in ["artist", "genre"] else ""
             filters += f"\tFILTER (LCASE(STR(?{self.spec}Name)) = LCASE(\"{self.value}\"))\n"
 
-        self.request = f"SELECT * WHERE {{\n\t{inter}{result}{filters}}} LIMIT {self.limit}"
+        self.request = f"SELECT * WHERE {{\n\t{inter}{result}{filters}}} LIMIT {min(100, self.limit * 3)}"
 
 
     def send_request(self) -> dict:
@@ -42,7 +42,7 @@ class Request():
         if len(results.get("results").get("bindings")) == 0:
             return {"results": []}
         results = results.get("results").get("bindings")
-        final_results = {
+        inter_results = {
             "results": [
                 {
                     "uri": result.get("result").get("value"),
@@ -53,11 +53,29 @@ class Request():
             ]
         }
         if self.type == "dbo:MusicalWork":
-            for i, result in enumerate(final_results.get("results")):
-                final_results.get("results")[i]["musicGenreName"] = results[i].get("genreName").get("value")
-                final_results.get("results")[i]["musicArtistName"] = results[i].get("artistName").get("value")
+            for i, result in enumerate(inter_results.get("results")):
+                inter_results.get("results")[i]["musicGenreName"] = results[i].get("genreName").get("value")
+                inter_results.get("results")[i]["musicArtistName"] = results[i].get("artistName").get("value")
                 res = requests.get(f"https://musicbrainz.org/ws/2/recording?query=%22{result.get('name')}%22 AND artist:%22{result.get('musicArtistName')}%22&fmt=json").json()
                 if len(res.get("recordings")) == 0:
                     continue
-                final_results.get("results")[i]["musicLength"] = res.get("recordings")[0].get("length")
-        return final_results
+                inter_results.get("results")[i]["musicLength"] = res.get("recordings")[0].get("length")
+
+        if self.type != "dbo:MusicalWork":
+            return inter_results
+
+        musicGenres = {}
+        for result in inter_results.get("results"):
+            if result.get("name") not in musicGenres.keys():
+                musicGenres[result.get("name")] = [result.get("musicGenreName")]
+            else:
+                musicGenres[result.get("name")].append(result.get("musicGenreName"))
+
+        final_results = []
+
+        for music, genres in musicGenres.items():
+            new_result = [result for result in inter_results.get("results") if result.get("name") == music][0]
+            new_result["musicGenreName"] = ', '.join(genres)
+            final_results.append(new_result)
+
+        return {"results": final_results[:self.limit]}
