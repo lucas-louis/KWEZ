@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #011a1a;
+      }
+
+      .cls-2 {
+        fill: #fff;
+        font-family: Outfit-Bold, Outfit;
+        font-size: 48px;
+        font-variation-settings: 'wght' 700;
+        font-weight: 700;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <rect class="cls-1" width="64" height="64" rx="16" ry="16"/>
+    <text class="cls-2" transform="translate(10.88 48.02)"><tspan x="0" y="0">K.</tspan></text>
+  </g>
+</svg>

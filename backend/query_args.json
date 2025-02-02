@@ -1,0 +1,49 @@
+{
+    "artist": {
+        "type": "dbo:MusicalArtist",
+        "specs": {
+            "name": {
+                "type": "primary",
+                "spec_type": "dbp:name"
+            },
+            "album": {
+                "type": "secondary",
+                "spec_type": "dbo:Album",
+                "prop_type": "^dbp:artist"
+            },
+            "music": {
+                "type": "secondary",
+                "spec_type": "dbo:MusicalWork",
+                "prop_type": "^dbo:artist"
+            }
+        }
+    },
+    "album": {
+        "type": "dbo:Album",
+        "specs": {
+            "name": {
+                "type": "primary",
+                "spec_type": "dbp:name"
+            }
+        }
+    },
+    "music": {
+        "type": "dbo:MusicalWork",
+        "specs": {
+            "name": {
+                "type": "primary",
+                "spec_type": "dbp:name"
+            },
+            "album": {
+                "type": "secondary",
+                "spec_type": "dbo:Album",
+                "prop_type": "^dbp:title"
+            },
+            "artist": {
+                "type": "secondary",
+                "spec_type": "dbo:MusicalArtist",
+                "prop_type": "dbo:artist"
+            }
+        }
+    }
+}
